@@ -34,10 +34,13 @@ module.exports = yeoman.generators.Base.extend({
         this.copy('jshintrc', '.jshintrc');
 
         var context = {
-            appName: this._.slugify(this.appname),
+            appName: this.appName,
             appDescription: this.appDescription
         };
 
+        this.template('_index.html', 'index.html', context);
+
+        context.appName = this._.slugify(this.appname);
         this.template('_package.json', 'package.json', context);
     },
 
