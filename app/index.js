@@ -9,6 +9,7 @@ module.exports = yeoman.generators.Base.extend({
         // have Yeoman greet the user
         this.log(this.yeoman);
 
+        // Ask user for data input to use during the scaffolding
         var prompts = [{
             type: 'input',
             name: 'appName',
@@ -21,6 +22,7 @@ module.exports = yeoman.generators.Base.extend({
             default: ''
         }];
 
+        // attach user input to generator
         this.prompt(prompts, function (props) {
             this.appName = props.appName;
             this.appDescription = props.appDescription;
@@ -32,19 +34,30 @@ module.exports = yeoman.generators.Base.extend({
     copyFiles: function() {
         this.copy('gitignore', '.gitignore');
         this.copy('jshintrc', '.jshintrc');
+        this.copy('_gulpfile.js', 'gulpfile.js');
 
+        // User data values to use in the templates
         var context = {
             appName: this.appName,
             appDescription: this.appDescription
         };
 
+        // Fill templates with data
         this.template('_index.html', 'index.html', context);
-
+        // Creation of package.json fails when title contains spaces?
         context.appName = this._.slugify(this.appname);
         this.template('_package.json', 'package.json', context);
+
+        // Javascript
+        this.mkdir('src');
+        this.write('src/app.js', 'console.log(\'Initialize app!\');');
+
+        // scss
+        this.mkdir('sass');
+        this.write('sass/styles.scss', '/*# sourceMappingURL=styles.css.map */');
     },
 
-    // Install neede npm packages used by Gulp
+    // Install needed npm packages used by Gulp
     install: function() {
         var done = this.async(),
         packages = ['gulp',
