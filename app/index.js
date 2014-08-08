@@ -27,9 +27,17 @@ module.exports = yeoman.generators.Base.extend({
         }.bind(this));
     },
 
+    // Install neede npm packages used by Gulp
     installGulp: function() {
-        var done = this.async();
+        var done = this.async(),
+            packages = ['gulp',
+                        'browser-sync',
+                        'gulp-autoprefixer',
+                        'gulp-concat',
+                        'gulp-jshint',
+                        'gulp-ruby-sass',
+                        'jshint-stylish'];
 
-        this.npmInstall(['gulp'], {'save-dev': true}, done);
+        this.npmInstall(packages, {'save-dev': true}, done);
     }
 });
