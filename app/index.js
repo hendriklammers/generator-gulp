@@ -3,41 +3,55 @@
 var yeoman = require('yeoman-generator');
 
 module.exports = yeoman.generators.Base.extend({
-    init: function() {
-        this.helperMethod = function() {
-            this.log('This won\'t be called automatically');
-        };
-    },
-
-    method1: function() {
-        this.log('Hello simpleapp generator');
-        this.helperMethod();
-    },
-
-    promptTask: function () {
+    prompting: function() {
         var done = this.async();
-        this.prompt({
-            type    : 'input',
-            name    : 'name',
-            message : 'Your project name',
-            default : this.appname // Default to current folder name
-        }, function (answers) {
-            this.log(answers.name);
+
+        // have Yeoman greet the user
+        this.log(this.yeoman);
+
+        var prompts = [{
+            type: 'input',
+            name: 'appName',
+            message: 'What is your app\'s name ?',
+            default: this.appname
+        }, {
+            type: 'input',
+            name: 'appDescription',
+            message: 'What is the app\'s description?',
+            default: ''
+        }];
+
+        this.prompt(prompts, function (props) {
+            this.appName = props.appName;
+            this.appDescription = props.appDescription;
+
             done();
         }.bind(this));
     },
 
-    // Install neede npm packages used by Gulp
-    installGulp: function() {
-        var done = this.async(),
-            packages = ['gulp',
-                        'browser-sync',
-                        'gulp-autoprefixer',
-                        'gulp-concat',
-                        'gulp-jshint',
-                        'gulp-ruby-sass',
-                        'jshint-stylish'];
+    copyFiles: function() {
+        this.copy('gitignore', '.gitignore');
+        this.copy('jshintrc', '.jshintrc');
 
-        this.npmInstall(packages, {'save-dev': true}, done);
+        var context = {
+            appName: this._.slugify(this.appname),
+            appDescription: this.appDescription
+        };
+
+        this.template('_package.json', 'package.json', context);
+    },
+
+    // Install neede npm packages used by Gulp
+    install: function() {
+        var done = this.async(),
+        packages = ['gulp',
+            'browser-sync',
+            'gulp-autoprefixer',
+            'gulp-concat',
+            'gulp-jshint',
+            'gulp-ruby-sass',
+            'jshint-stylish'];
+
+            this.npmInstall(packages, {'save-dev': true}, done);
     }
 });
