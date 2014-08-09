@@ -44,17 +44,20 @@ module.exports = yeoman.generators.Base.extend({
 
         // Fill templates with data
         this.template('_index.html', 'index.html', context);
+
         // Creation of package.json fails when title contains spaces?
         context.appName = this._.slugify(this.appname);
+
         this.template('_package.json', 'package.json', context);
+        this.template('_bower.json', 'bower.json', context);
 
         // Javascript
-        this.mkdir('src');
-        this.write('src/app.js', 'console.log(\'Initialize app!\');');
+        this.mkdir('scripts');
+        this.write('scripts/app.js', 'console.log(\'Initialize app!\');');
 
         // scss
         this.mkdir('sass');
-        this.write('sass/styles.scss', '/*# sourceMappingURL=styles.css.map */');
+        this.write('sass/screen.scss', '/*# sourceMappingURL=screen.css.map */');
     },
 
     // Install needed npm packages used by Gulp
@@ -63,7 +66,6 @@ module.exports = yeoman.generators.Base.extend({
         packages = ['gulp',
             'browser-sync',
             'gulp-autoprefixer',
-            'gulp-concat',
             'gulp-jshint',
             'gulp-ruby-sass',
             'jshint-stylish'];

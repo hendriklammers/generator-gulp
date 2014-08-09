@@ -1,8 +1,5 @@
 {
   "name": "<%= appName %>",
   "version": "0.0.0",
-  "description": "<%= appDescription %>",
-  "main": "index.html",
-  "devDependencies": {
-  }
+  "description": "<%= appDescription %>"
 }

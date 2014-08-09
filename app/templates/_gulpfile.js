@@ -5,14 +5,14 @@ var gulp = require('gulp'),
     prefix = require('gulp-autoprefixer'),
     browserSync = require('browser-sync'),
     jshint = require('gulp-jshint'),
-    stylish = require('jshint-stylish'),
-    concat = require('gulp-concat');
+    stylish = require('jshint-stylish');
 
 gulp.task('browser-sync', function() {
     browserSync.init({
         files: [
             'index.html',
-            'assets/**/*'
+            'css/*.css',
+            'scripts/**/*.js'
         ],
         server: {
             baseDir: ['./']
@@ -22,27 +22,21 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('jshint', function() {
-    return gulp.src('src/app.js')
+    return gulp.src('scripts/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish));
-});
-
-gulp.task('scripts', ['jshint'], function() {
-    return gulp.src(['src/app.js'])
-        .pipe(concat('bundle.js'))
-        .pipe(gulp.dest('assets/js'));
 });
 
 gulp.task('styles', function() {
     return gulp.src('sass/**/*.scss')
         .pipe(sass({style: 'compact', sourcemap: true, sourcemapPath: '../../sass'}))
         .pipe(prefix('last 2 versions', '> 1%', 'ie 9', 'ie 8'))
-        .pipe(gulp.dest('assets/css'));
+        .pipe(gulp.dest('css'));
 });
 
-gulp.task('default', ['styles', 'scripts']);
+gulp.task('default', ['styles', 'jshint']);
 
-gulp.task('watch', ['styles', 'scripts', 'browser-sync'], function () {
+gulp.task('watch', ['styles', 'jshint', 'browser-sync'], function () {
     gulp.watch('sass/*.scss', ['styles']);
-    gulp.watch('src/**/*.js', ['scripts']);
+    gulp.watch('scripts/**/*.js', ['jshint']);
 });
