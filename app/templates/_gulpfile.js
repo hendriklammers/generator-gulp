@@ -27,6 +27,25 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter(stylish));
 });
 
+gulp.task('sass', function() {
+    return gulp.src('sass/**/*.scss')
+        .pipe(sass({style: 'compact', sourcemapPath: '../../sass'}))
+        .on('error', function (error) {
+            console.log(error.message);
+        })
+        .pipe(gulp.dest('css'));
+});
+
+gulp.task('prefixr', function() {
+    return gulp.src('sass/**/*.scss')
+        .pipe(sass({style: 'compact', sourcemapPath: '../../sass'}))
+        .on('error', function (error) {
+            console.log(error.message);
+        })
+        .pipe(prefix('last 2 versions', '> 1%', 'ie 9', 'ie 8'))
+        .pipe(gulp.dest('css'));
+});
+
 gulp.task('styles', function() {
     return gulp.src('sass/**/*.scss')
         .pipe(sass({style: 'compact', sourcemapPath: '../../sass'}))
