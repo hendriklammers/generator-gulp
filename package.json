@@ -1,7 +1,7 @@
 {
-  "name": "generator-base-gulp",
+  "name": "generator-gulp-simple",
   "version": "0.1.0",
-  "description": "",
+  "description": "Basic file structure with gulpfile",
   "keywords": [
     "yeoman-generator"
   ],
