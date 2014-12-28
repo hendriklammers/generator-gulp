@@ -53,24 +53,32 @@ module.exports = yeoman.generators.Base.extend({
 
         // Javascript
         this.mkdir('scripts');
-        this.write('scripts/app.js', 'console.log(\'Initialize app!\');');
+        this.write('scripts/app.js', '');
 
         // scss
         this.mkdir('sass');
-        this.write('sass/screen.scss', '/*# sourceMappingURL=screen.css.map */');
+        this.write('sass/screen.scss', '');
     },
 
     // Install needed npm packages used by Gulp
     install: function() {
         var done = this.async(),
-        packages = ['gulp',
+        packages = [
             'browser-sync',
+            'del',
             'gulp',
             'gulp-autoprefixer',
+            'gulp-concat',
             'gulp-jshint',
+            'gulp-load-plugins',
+            'gulp-minify-css',
+            'gulp-rename',
             'gulp-ruby-sass',
-            'jshint-stylish'];
+            'gulp-sourcemaps',
+            'gulp-uglify',
+            'gulp-util'
+        ];
 
-            this.npmInstall(packages, {'save-dev': true}, done);
+        this.npmInstall(packages, {'save-dev': true}, done);
     }
 });
