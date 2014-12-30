@@ -44,7 +44,7 @@ gulp.task('uglify', function() {
 gulp.task('sass', function() {
     return plugins.rubySass('sass', {sourcemap: true, style: 'expanded'})
         .on('error', handleError)
-        .pipe(plugins.autoprefixer('last 2 versions', '> 1%', 'ie 9'))
+        .pipe(plugins.autoprefixer('last 2 versions', 'ie 9'))
         .pipe(plugins.sourcemaps.write())
         .pipe(gulp.dest('css'));
 });

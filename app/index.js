@@ -45,15 +45,15 @@ module.exports = yeoman.generators.Base.extend({
         // Fill templates with data
         this.template('_index.html', 'index.html', context);
 
-        // Creation of package.json fails when title contains spaces?
+        // Creation of package.json fails when title contains spaces
         context.appName = this._.slugify(this.appname);
 
         this.template('_package.json', 'package.json', context);
         this.template('_bower.json', 'bower.json', context);
 
         // Javascript
-        this.mkdir('scripts');
-        this.write('scripts/app.js', '');
+        this.mkdir('src');
+        this.write('src/app.js', '');
 
         // scss
         this.mkdir('sass');
@@ -65,17 +65,16 @@ module.exports = yeoman.generators.Base.extend({
         var done = this.async(),
         packages = [
             'browser-sync',
-            'del',
             'gulp',
             'gulp-autoprefixer',
             'gulp-concat',
             'gulp-jshint',
             'gulp-load-plugins',
-            'gulp-minify-css',
             'gulp-rename',
-            'gulp-ruby-sass',
+            'gulp-ruby-sass@1.0.0-alpha',
             'gulp-sourcemaps',
             'gulp-uglify',
+            'jshint-stylish',
             'gulp-util'
         ];
 
