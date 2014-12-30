@@ -1,5 +1,5 @@
 {
-  "name": "generator-gulp",
+  "name": "generator-gulp-starter",
   "version": "0.1.0",
   "description": "Basic file structure with gulpfile",
   "keywords": [
