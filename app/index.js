@@ -70,11 +70,11 @@ module.exports = yeoman.generators.Base.extend({
             'gulp-concat',
             'gulp-jshint',
             'gulp-load-plugins',
-            'gulp-rename',
             'gulp-ruby-sass@1.0.0-alpha',
             'gulp-sourcemaps',
             'gulp-uglify',
             'jshint-stylish',
+            'gulp-if',
             'gulp-util'
         ];
 

@@ -2,9 +2,12 @@
 
 var gulp = require('gulp'),
     plugins = require('gulp-load-plugins')(),
-    browserSync = require('browser-sync'),
+    gulpif = require('gulp-if'),
+    browserSync = require('browser-sync');
 
-    path = {
+var isProduction = process.env.NODE_ENV === 'production';
+
+var path = {
         html: '*.html',
         scripts: 'src/**/*.js',
         styles: 'sass/**/*.scss'
@@ -24,36 +27,35 @@ gulp.task('browser-sync', function() {
     });
 });
 
-gulp.task('jshint', function() {
+gulp.task('scripts', function() {
     return gulp.src(path.scripts)
         .pipe(plugins.jshint())
-        .pipe(plugins.jshint.reporter('jshint-stylish'));
-});
-
-gulp.task('uglify', function() {
-    return gulp.src(path.scripts)
+        .pipe(plugins.jshint.reporter('jshint-stylish'))
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.concat('app.js'))
-        .pipe(gulp.dest('dist'))
-        .pipe(plugins.uglify())
-        .pipe(plugins.rename({suffix: '.min'}))
+        .pipe(gulpif(isProduction, plugins.uglify()))
         .pipe(plugins.sourcemaps.write('./'))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('sass', function() {
-    return plugins.rubySass('sass', {sourcemap: true, style: 'expanded'})
+    var config = {
+        sourcemap: !isProduction,
+        style: isProduction ? 'compressed' : 'expanded'
+    };
+
+    return plugins.rubySass('sass', config)
         .on('error', handleError)
         .pipe(plugins.autoprefixer('last 2 versions', 'ie 9'))
         .pipe(plugins.sourcemaps.write())
         .pipe(gulp.dest('css'));
 });
 
-gulp.task('default', ['sass', 'jshint', 'uglify']);
+gulp.task('default', ['sass', 'scripts']);
 
 gulp.task('watch', ['browser-sync'], function () {
     gulp.watch(path.styles, ['sass']);
-    gulp.watch(path.scripts, ['jshint', 'uglify']);
+    gulp.watch(path.scripts, ['scripts']);
 });
 
 /**
