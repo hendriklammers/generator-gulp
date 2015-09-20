@@ -32,6 +32,7 @@ gulp.task('scripts', function() {
         .pipe(plugins.jshint())
         .pipe(plugins.jshint.reporter('jshint-stylish'))
         .pipe(plugins.sourcemaps.init())
+        .pipe(plugins.babel())
         .pipe(plugins.concat('app.js'))
         .pipe(gulpif(isProduction, plugins.uglify()))
         .pipe(plugins.sourcemaps.write('./'))

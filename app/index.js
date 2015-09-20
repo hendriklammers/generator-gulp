@@ -67,6 +67,7 @@ module.exports = yeoman.generators.Base.extend({
             'browser-sync',
             'gulp',
             'gulp-autoprefixer',
+            'gulp-babel',
             'gulp-concat',
             'gulp-jshint',
             'gulp-load-plugins',
