@@ -29,6 +29,7 @@ gulp.task('browser-sync', function() {
 
 gulp.task('scripts', function() {
     return gulp.src(path.scripts)
+        .pipe(plugins.plumber(handleError))
         .pipe(plugins.jshint())
         .pipe(plugins.jshint.reporter('jshint-stylish'))
         .pipe(plugins.sourcemaps.init())
@@ -46,7 +47,7 @@ gulp.task('sass', function() {
     };
 
     return plugins.rubySass('sass', config)
-        .on('error', handleError)
+        .pipe(plugins.plumber(handleError))
         .pipe(plugins.autoprefixer('last 2 versions', 'ie 9'))
         .pipe(plugins.sourcemaps.write())
         .pipe(gulp.dest('css'));
@@ -64,5 +65,8 @@ gulp.task('watch', ['browser-sync'], function () {
  * @param error
  */
 function handleError(error) {
-    plugins.util.log(plugins.util.colors.red(error));
+    plugins.util.log(plugins.util.colors.red('Error (' + error.plugin + '): ' + error.message));
+
+    // jshint validthis: true
+    this.emit('end');
 }
