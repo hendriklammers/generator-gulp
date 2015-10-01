@@ -40,23 +40,23 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('sass', function() {
-    var config = {
-        sourcemap: !isProduction,
-        style: isProduction ? 'compressed' : 'expanded'
-    };
-
-    return plugins.rubySass('sass', config)
+gulp.task('css', function() {
+    return gulp.src(path.styles)
         .pipe(plugins.plumber(handleError))
+        .pipe(plugins.sourcemaps.init())
+        .pipe(plugins.sass({
+            errLogToConsole: true,
+            outputStyle: isProduction ? 'compressed' : 'expanded'
+        }))
         .pipe(plugins.autoprefixer('last 2 versions', 'ie 9'))
-        .pipe(plugins.sourcemaps.write())
+        .pipe(plugins.sourcemaps.write('./'))
         .pipe(gulp.dest('css'));
 });
 
 gulp.task('default', ['sass', 'scripts']);
 
 gulp.task('watch', ['browser-sync'], function () {
-    gulp.watch(path.styles, ['sass']);
+    gulp.watch(path.styles, ['css']);
     gulp.watch(path.scripts, ['scripts']);
 });
 
